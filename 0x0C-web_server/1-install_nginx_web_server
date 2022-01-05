@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
-# A Bash script that configures a new Ubuntu machine to respect the requirements:
-#+ Install nginx
-#+ Nginx should be listening on port 80
-#+ When querying Nginx at its root / with a GET request (requesting a page) using curl, it must return a page that contains the string Holberton School
+# installs nginx and configure it to listen on port 80
+# print "Hello World"
 
-sudo apt-get -y update
-sudo apt-get -y upgrade
-sudo apt-get -y install nginx
-sudo service nginx start
-echo "Hello World!" | sudo tee /usr/share/nginx/html/index.html
+apt-get update
+apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+sudo mkdir -p /var/www/html
+sudo chmod -R 755 /var/www
+echo 'Hello World!' > /var/www/html/index.html
+if [ "$(pgrep -c nginx)" -le 0 ]; then
+    service nginx start
+else
+    service nginx restart
+fi
